@@ -1,0 +1,53 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Validate</title>
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/validation")
+	@Scripts.Render("~/bundles/bootstrap")
+
+	@Styles.Render("~/Content/css")
+	@Styles.Render("~/Content/login")
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				@Html.ActionLink("Validación", "GetTicketInfo", "TicketValidation", new { area = "" }, new { @class = "navbar-brand" })
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li>@Html.ActionLink("Usuarios", "UserValidations", "Users", new { area = "" }, null)</li>
+					@if (TempData["RoleId"].ToString() == "1") { 
+						<li>@Html.ActionLink("Roles", "prmRoles", "Roles", new { area = "" }, null)</li>
+					}
+					<li>@Html.ActionLink("Cerrar Sesión", "LogOut", "Home", new { area = "" }, null)</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container body-content">
+		<div style="margin-top: 50px">
+			@*<div style="width:auto; text-align: right; background: -webkit-linear-gradient(top,#53535a,#747175);">
+				@if (TempData["SessionId"] != null)
+				{
+					<strong style="color: white">@Html.Encode(TempData["SessionId"]) + @Html.Encode(TempData["User"])</strong>
+					@Html.ActionLink("| Log Out |", "LogOut", "Home", null, new { @style = "color: #dff0d8" })
+				}
+			</div>*@
+			@RenderBody()
+		</div>
+	</div>
+</body>
+</html>

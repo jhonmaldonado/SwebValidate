@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SWEB_DB_Prm_Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TicketValidations">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Timestamp" Type="datetime" />
+    <Property Name="TicketId" Type="varchar" MaxLength="24" Nullable="false" />
+    <Property Name="ValidationId" Type="smallint" Nullable="false" />
+    <Property Name="UserId" Type="bigint" Nullable="false" />
+    <Property Name="IsValid" Type="bit" Nullable="false" />
+    <Property Name="IsApplied" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ValidationPlans">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ValidationId" Type="smallint" Nullable="false" />
+    <Property Name="Customer" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="MinutePlan" Type="int" Nullable="false" />
+    <Property Name="IsValid" Type="bit" Nullable="false" />
+    <Property Name="Remarks" Type="varchar" MaxLength="256" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="SWEB_DB_Prm_ModelStoreContainer">
+    <EntitySet Name="TicketValidations" EntityType="Self.TicketValidations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ValidationPlans" EntityType="Self.ValidationPlans" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

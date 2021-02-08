@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SWEB_DB_Prm_Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="TicketValidations">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Timestamp" Type="DateTime" Precision="3" />
+    <Property Name="TicketId" Type="String" MaxLength="24" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ValidationId" Type="Int16" Nullable="false" />
+    <Property Name="UserId" Type="Int64" Nullable="false" />
+    <Property Name="IsValid" Type="Boolean" Nullable="false" />
+    <Property Name="IsApplied" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="SWEB_DB_Prm_Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="TicketValidations" EntityType="Self.TicketValidations" />
+    <EntitySet Name="ValidationPlans" EntityType="SWEB_DB_Prm_Model.ValidationPlans" />
+  </EntityContainer>
+  <EntityType Name="ValidationPlans">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ValidationId" Type="Int16" Nullable="false" />
+    <Property Name="Customer" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MinutePlan" Type="Int32" Nullable="false" />
+    <Property Name="IsValid" Type="Boolean" Nullable="false" />
+    <Property Name="Remarks" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+  </EntityType>
+</Schema>

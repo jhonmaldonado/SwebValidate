@@ -1,0 +1,120 @@
+﻿
+@{
+	//Layout = null;
+	IEnumerable<SwebValidate.Models.TicketValidations> ticketValidations = ViewData["TicketValidations"] as IEnumerable<SwebValidate.Models.TicketValidations>;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TracingTicketValidations</title>
+	<script type="text/javascript">
+		jQuery(document).ready(function ($) {
+
+			$("#btnExport").on('click', function () {
+				fnExcelReport();
+			});
+
+			function fnExcelReport() {
+				var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+				var textRange; var j = 0;
+				tab = $('.table');//document.getElementById('headerTable'); // id of table
+
+				for (j = 0; j < tab.length; j++) {
+					tab_text = tab_text + tab[j].innerHTML + "</tr>";
+					//tab_text=tab_text+"</tr>";
+				}
+
+				tab_text = tab_text + "</table>";
+				tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+				tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+				tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+				var ua = window.navigator.userAgent;
+				var msie = ua.indexOf("MSIE ");
+
+				if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+				{
+					txtArea1.document.open("txt/html", "replace");
+					txtArea1.document.write(tab_text);
+					txtArea1.document.close();
+					txtArea1.focus();
+					sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+				}
+				else                 //other browser not tested on IE 11
+					sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+				return (sa);
+			}
+		});
+	</script>
+</head>
+<body>
+	<table class="table">
+		<tr>
+			<td>
+				<input type="date" id="fchConsulta" class="date100" value="@string.Format("{0:yyyy-MM-dd}", TempData["fchConsulta"])" />
+			</td>
+			<td colspan="3">
+				<button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("TracingTicketValidations", "TicketValidation")?value='+ $('#fchConsulta').val()">
+					<i class="glyphicon glyphicon-search"></i> Consultar Validaciones
+				</button>
+			</td>
+			<td>
+				<button id="btnExport" type="button" class="btn btn-default">
+					<i class="glyphicon glyphicon-export"></i> Exportar a Excel
+				</button>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				Fecha
+			</th>
+			<th>
+				Tiquete Parqueadero
+			</th>
+			<th>
+				Validación
+			</th>
+			<th>
+				Vigente?
+			</th>
+			<th>
+				Aplicada?
+			</th>
+			<th>
+				Usuario
+			</th>
+			<th></th>
+		</tr>
+
+		@foreach (var item in ticketValidations)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Timestamp)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.TicketId)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Validation)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsValid)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsApplied)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.User)
+				</td>
+			</tr>
+		}
+
+	</table>
+	<iframe id="txtArea1" style="display:none"></iframe>
+</body>
+</html>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SWEB_DB_Prm_ModelStoreContainer" CdmEntityContainer="SWEB_DB_Prm_Entities">
+    <EntitySetMapping Name="TicketValidations">
+      <EntityTypeMapping TypeName="SWEB_DB_Prm_Model.TicketValidations">
+        <MappingFragment StoreEntitySet="TicketValidations">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="TicketId" ColumnName="TicketId" />
+          <ScalarProperty Name="ValidationId" ColumnName="ValidationId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+          <ScalarProperty Name="IsApplied" ColumnName="IsApplied" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ValidationPlans">
+      <EntityTypeMapping TypeName="SWEB_DB_Prm_Model.ValidationPlans">
+        <MappingFragment StoreEntitySet="ValidationPlans">
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+          <ScalarProperty Name="MinutePlan" ColumnName="MinutePlan" />
+          <ScalarProperty Name="Customer" ColumnName="Customer" />
+          <ScalarProperty Name="ValidationId" ColumnName="ValidationId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

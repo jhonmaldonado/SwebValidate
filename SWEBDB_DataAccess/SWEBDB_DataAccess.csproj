@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F37710AA-2A02-45B6-929C-7215D9746BA7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SWEBDB_DataAccess</RootNamespace>
+    <AssemblyName>SWEBDB_DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Roles.cs">
+      <DependentUpon>SWEBDB_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sessions.cs">
+      <DependentUpon>SWEBDB_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SWEBDB_Model.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SWEBDB_Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SWEBDB_Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SWEBDB_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SWEBDB_Model.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SWEBDB_Model.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SWEBDB_Prm_Model.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SWEBDB_Prm_Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SWEBDB_Prm_Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SWEBDB_Prm_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SWEBDB_Prm_Model.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SWEBDB_Prm_Model.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TicketValidations.cs">
+      <DependentUpon>SWEBDB_Prm_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Users.cs">
+      <DependentUpon>SWEBDB_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserValidations.cs">
+      <DependentUpon>SWEBDB_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ValidationPlans.cs">
+      <DependentUpon>SWEBDB_Prm_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="Models\SWEBDB_Model.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SWEBDB_Model.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="Models\SWEBDB_Model.edmx.diagram">
+      <DependentUpon>SWEBDB_Model.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Models\SWEBDB_Prm_Model.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SWEBDB_Prm_Model.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Models\SWEBDB_Prm_Model.edmx.diagram">
+      <DependentUpon>SWEBDB_Prm_Model.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Models\SWEBDB_Model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SWEBDB_Model.Context.cs</LastGenOutput>
+      <DependentUpon>SWEBDB_Model.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\SWEBDB_Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SWEBDB_Model.edmx</DependentUpon>
+      <LastGenOutput>SWEBDB_Model.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SWEBDB_Prm_Model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SWEBDB_Prm_Model.edmx</DependentUpon>
+      <LastGenOutput>SWEBDB_Prm_Model.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SWEBDB_Prm_Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SWEBDB_Prm_Model.edmx</DependentUpon>
+      <LastGenOutput>SWEBDB_Prm_Model.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SWEB_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="SWEBDB_Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Sessions" EntityType="SWEB_DBModel.Sessions" />
+    <EntitySet Name="Users" EntityType="SWEB_DBModel.Users" />
+    <AssociationSet Name="FK_Sessions_Users" Association="SWEB_DBModel.FK_Sessions_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Sessions" EntitySet="Sessions" />
+    </AssociationSet>
+    <EntitySet Name="Roles" EntityType="SWEB_DBModel.Roles" />
+    <EntitySet Name="UserValidations" EntityType="SWEB_DBModel.UserValidations" />
+    <AssociationSet Name="FK_Users_Roles" Association="SWEB_DBModel.FK_Users_Roles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserValidations_Users" Association="SWEB_DBModel.FK_UserValidations_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserValidations" EntitySet="UserValidations" />
+    </AssociationSet>
+    <EntitySet Name="TicketValidations" EntityType="SWEB_DBModel.TicketValidations" />
+    <AssociationSet Name="FK_TicketValidations_Users" Association="SWEB_DBModel.FK_TicketValidations_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TicketValidations" EntitySet="TicketValidations" />
+    </AssociationSet>
+    <EntitySet Name="ValidationPlans" EntityType="SWEB_DBModel.ValidationPlans" />
+  </EntityContainer>
+  <EntityType Name="Sessions">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int64" Nullable="false" />
+    <Property Name="StartDate" Type="DateTime" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Users" Relationship="SWEB_DBModel.FK_Sessions_Users" FromRole="Sessions" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="User" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="RoleId" Type="Int32" />
+    <NavigationProperty Name="Sessions" Relationship="SWEB_DBModel.FK_Sessions_Users" FromRole="Users" ToRole="Sessions" />
+    <NavigationProperty Name="Roles" Relationship="SWEB_DBModel.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
+    <NavigationProperty Name="UserValidations" Relationship="SWEB_DBModel.FK_UserValidations_Users" FromRole="Users" ToRole="UserValidations" />
+    <NavigationProperty Name="TicketValidations" Relationship="SWEB_DBModel.FK_TicketValidations_Users" FromRole="Users" ToRole="TicketValidations" />
+  </EntityType>
+  <Association Name="FK_Sessions_Users">
+    <End Type="SWEB_DBModel.Users" Role="Users" Multiplicity="1" />
+    <End Type="SWEB_DBModel.Sessions" Role="Sessions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Sessions">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AllowedValidations" Type="Int32" />
+    <NavigationProperty Name="Users" Relationship="SWEB_DBModel.FK_Users_Roles" FromRole="Roles" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="UserValidations">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int64" Nullable="false" />
+    <Property Name="ValidationId" Type="Int16" Nullable="false" />
+    <Property Name="IsValid" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="SWEB_DBModel.FK_UserValidations_Users" FromRole="UserValidations" ToRole="Users" />
+  </EntityType>
+  <Association Name="FK_Users_Roles">
+    <End Type="SWEB_DBModel.Roles" Role="Roles" Multiplicity="0..1" />
+    <End Type="SWEB_DBModel.Users" Role="Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserValidations_Users">
+    <End Type="SWEB_DBModel.Users" Role="Users" Multiplicity="1" />
+    <End Type="SWEB_DBModel.UserValidations" Role="UserValidations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UserValidations">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="TicketValidations">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Timestamp" Type="DateTime" Precision="3" />
+    <Property Name="TicketId" Type="String" Nullable="false" MaxLength="24" FixedLength="false" Unicode="false" />
+    <Property Name="ValidationId" Type="Int16" Nullable="false" />
+    <Property Name="UserId" Type="Int64" Nullable="false" />
+    <Property Name="IsValid" Type="Boolean" Nullable="false" />
+    <Property Name="IsApplied" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="SWEB_DBModel.FK_TicketValidations_Users" FromRole="TicketValidations" ToRole="Users" />
+  </EntityType>
+  <Association Name="FK_TicketValidations_Users">
+    <End Type="SWEB_DBModel.Users" Role="Users" Multiplicity="1" />
+    <End Type="SWEB_DBModel.TicketValidations" Role="TicketValidations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="TicketValidations">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ValidationPlans">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ValidationId" Type="Int16" Nullable="false" />
+    <Property Name="Customer" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MinutePlan" Type="Int32" Nullable="false" />
+    <Property Name="IsValid" Type="Boolean" Nullable="false" />
+    <Property Name="Remarks" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+  </EntityType>
+</Schema>

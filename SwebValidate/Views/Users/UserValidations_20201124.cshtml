@@ -1,0 +1,133 @@
+﻿@*@model IEnumerable<SWEBDB_DataAccess.Models.Users>*@
+@model SwebValidate.Models.Users>
+@{
+	Layout = null;
+	SwebValidate.Models.Users Usuarios = ViewData["Users"] as SwebValidate.Models.Users;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>UserValidations</title>
+	<script type="text/javascript">
+		jQuery(document).ready(function ($) {
+
+			$("#btCreate").on('click', function () {
+				$("#mUser").modal('show');
+			});
+
+		});
+	</script>
+</head>
+<body>
+
+	<button id="btCreate" type="button" class="btn btn-primary">
+		<i class="glyphicon glyphicon-user"></i> Crear Usuario
+	</button>
+	<div id="mUser" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+					<h4 class="modal-title">Crear Usuario</h4>
+				</div>
+				<div class="modal-body">
+					@*<form class="well form-horizontal" id="customer_form" method="POST" action="/RBPDV_WS/ws/DiccionarioDatosFactory.svc/UploadFile" enctype="multipart/form-data">
+			<fieldset>
+				<label class="custom-file-upload">
+					<input id="uEnlace" type="file" style="display: none" />
+					<i class="fa fa-cloud-upload"></i> Imagen
+				</label>
+				<div class="form-group">
+					<h4>PARA MODIFICAR LA CONTRASEÑA DE ACCESO A PUNTO DE VENTA, INGRESA UNA NUEVA CLAVE PERSONAL.</h4>
+					<h5>Para mayor seguridad, le recomendamos utilizar una combinación de letras (Mayúsculas y Minúsculas) y números.</h5>
+				</div>
+				<div class="spacer"></div>
+				<div class="form-group">
+					<label class="k-label form-label" for="password">Nueva Contraseña</label>
+					<input id="txContrasena" name="password" type="password" class="k-textbox form-control" placeholder="Nueva Contraseña" />
+				</div>
+				<div class="form-group">
+					<label class="k-label form-label" for="cfmPassword">Confirmar Contraseña</label>
+					<input id="txConfirmarContrasena" name="cfmPassword" type="password" class="k-textbox form-control" placeholder="Confirmar Contraseña" />
+				</div>
+			</fieldset>
+		</form>*@
+
+					@using (Html.BeginForm("Create", "Users", FormMethod.Post))
+					{
+						@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+						<div class="wrap-input100 validate-input" data-validate="Enter username">
+							@Html.EditorFor(user => Usuarios.User)
+							@Html.ValidationMessageFor(user => Usuarios.User, "", new { @class = "text-danger" })
+						</div>
+						<div class="wrap-input100 validate-input" data-validate="Enter username">
+							@Html.EditorFor(user => Usuarios.Password)
+							@Html.ValidationMessageFor(user => Usuarios.Password, "", new { @class = "text-danger" })
+						</div>
+						<div class="container-login100-form-btn">
+							<button class="login100-form-btn">
+								Ingresar
+							</button>
+						</div>
+					}
+				</div>
+				<div class="modal-footer">
+					<button id="btGuardarContrasena" type="submit" class="btn btn-primary" title="Guardar cambios.">
+						<i class="glyphicon glyphicon-floppy-disk"></i>
+						Guardar
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<p>
+		@*@Html.ActionLink("Create New", "Create")*@
+	</p>
+	<table class="table">
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.User)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Password)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Roles)
+			</th>
+			<th></th>
+		</tr>
+
+		@foreach (var item in Model)
+		{
+	<tr>
+		<td>
+			@Html.DisplayFor(modelItem => item.User)
+		</td>
+		<td>
+			@Html.DisplayFor(modelItem => item.Password)
+		</td>
+		@*<td>
+			@Html.DisplayFor(modelItem => item.Roles)
+		</td>*@
+		<td>
+			@foreach (var r in item.Roles)
+			{
+				@Html.DisplayFor(modelItem => r.Role)
+			}
+		</td>
+		<td>
+			@Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+			@Html.ActionLink("Details", "Details", new { id = item.id }) |
+			@Html.ActionLink("Delete", "Delete", new { id = item.id })
+		</td>
+	</tr>
+		}
+
+	</table>
+</body>
+</html>

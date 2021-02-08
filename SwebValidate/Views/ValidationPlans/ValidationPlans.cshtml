@@ -1,0 +1,153 @@
+﻿@model SwebValidate.Models.ValidationPlans
+
+@{
+	IEnumerable<SwebValidate.Models.ValidationPlans> ValidationPlansList = ViewData["ValidationPlans"] as IEnumerable<SwebValidate.Models.ValidationPlans>;
+	IEnumerable<SwebValidate.Models.Validations> Validations = ViewData["Validations"] as IEnumerable<SwebValidate.Models.Validations>;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>UserValidations</title>
+	<script type="text/javascript">
+		jQuery(document).ready(function ($) {
+			if (@TempData["vpModal"].ToString() == false) {
+				console.log("item.id:" + @Model.id);
+				if (@Model.id > 0) {
+					$("#mTitle").text("Editar Plan de Minutos");
+					$('.vpModal').attr('action', '/ValidationPlans/Edit')
+				}
+				else {
+					$("#mTitle").text("Crear Plan de Minutos");
+					$('.vpModal').attr('action', '/ValidationPlans/Create')
+				}
+				$("#mVP").modal('show');
+			}
+		});
+	</script>
+</head>
+<body>
+	@using (Html.BeginForm("Create", "ValidationPlans", FormMethod.Post, new { @class = "vpModal" }))
+	{
+		@Html.AntiForgeryToken()
+		<div id="mVP" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<h4 id="mTitle" class="modal-title">Crear Plan de Minutos</h4>
+					</div>
+					<div class="modal-body">
+						<div class="wrap-editForm100">
+							@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+							<div class="wrap-input100">
+								@*@Html.DropDownListFor(model => model.RoleId, new SelectList(Model.Roles, "id", "Role"))*@
+								@*<input type="text" value="@ViewBag.UserValidation.ValidationId" />*@
+								<span class="form-subtitle p-b-10 p-t-10">
+									Validación
+								</span>
+								<div align="center">
+									@Html.DropDownListFor(model => model.ValidationId, new SelectList(Model.Validations, "validationId", "validation"), new { @class = "DropDownList100" })
+								</div>
+							</div>
+							<div class="wrap-input100 validate-input" data-validate="Enter Customer">
+								<span class="form-subtitle p-b-10 p-t-10">
+									Cliente
+								</span>
+								@Html.EditorFor(model => model.Customer, new { htmlAttributes = new { @class = "input100", type = "text" } })
+								@Html.ValidationMessageFor(model => model.Customer, "", new { @class = "text-danger" })
+							</div>
+							<div class="wrap-input100 validate-input" data-validate="Enter MinutePlan">
+								<span class="form-subtitle p-b-10 p-t-10">
+									Plan de minutos
+								</span>
+								@Html.EditorFor(model => model.MinutePlan, new { htmlAttributes = new { @class = "input100" } })
+								@Html.ValidationMessageFor(model => model.MinutePlan, "", new { @class = "text-danger" })
+							</div>
+							<div class="wrap-input100 validate-input" data-validate="Enter Remarks">
+								<span class="form-subtitle p-b-10 p-t-10">
+									Comentarios / Observaciones
+								</span>
+								@Html.EditorFor(model => model.Remarks, new { htmlAttributes = new { @class = "input100" } })
+								@Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+							</div>
+							<div class="wrap-input100 validate-input" data-validate="Enter password">
+								<span class="form-subtitle p-b-10 p-t-10">
+									Vigente
+								</span>
+								<div align="center">
+									@Html.CheckBox("IsValid", (bool)@Model.IsValid)
+								</div>
+							</div>
+							@Html.HiddenFor(model => model.id)
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button id="btGuardar" type="submit" class="btn btn-warning" title="Guardar cambios.">
+							<i class="glyphicon glyphicon-floppy-disk"></i>
+							Guardar
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+	<br />
+	<table class="table">
+		<tr>
+			<td colspan="3">
+				<button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("Create", "ValidationPlans")'">
+					<i class="glyphicon glyphicon-user"></i> Crear Plan de Minutos
+				</button>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				Validación
+			</th>
+			<th>
+				Cliente
+			</th>
+			<th>
+				Plan de Minutos
+			</th>
+			<th>
+				Comentarios
+			</th>
+			<th>
+				Vigente
+			</th>
+			<th></th>
+		</tr>
+
+		@foreach (var item in ValidationPlansList)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Validation)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Customer)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.MinutePlan)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Remarks)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsValid)
+				</td>
+				<td>
+					<button class="btn btn-default btn-sm" type="button" data-id="@item.id" onclick="location.href='@Url.Action("Edit", "ValidationPlans", new { id = item.id })'">
+						<span class="glyphicon glyphicon-edit"></span>
+					</button>
+				</td>
+			</tr>
+		}
+	</table>
+</body>
+</html>

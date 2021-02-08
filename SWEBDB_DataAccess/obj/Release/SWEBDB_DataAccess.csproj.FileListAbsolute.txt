@@ -1,0 +1,12 @@
+C:\Users\desar\source\repos\SwebValidate\SWEBDB_DataAccess\bin\Release\SWEBDB_DataAccess.dll.config
+C:\Users\desar\source\repos\SwebValidate\SWEBDB_DataAccess\bin\Release\SWEBDB_DataAccess.dll
+C:\Users\desar\source\repos\SwebValidate\SWEBDB_DataAccess\bin\Release\SWEBDB_DataAccess.pdb
+C:\Users\desar\source\repos\SwebValidate\SWEBDB_DataAccess\bin\Release\EntityFramework.dll
+C:\Users\desar\source\repos\SwebValidate\SWEBDB_DataAccess\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\desar\source\repos\SwebValidate\SWEBDB_DataAccess\bin\Release\EntityFramework.xml
+C:\Users\desar\source\repos\SwebValidate\SWEBDB_DataAccess\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\desar\source\repos\SwebValidate\SWEBDB_DataAccess\obj\Release\SWEBDB_DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\desar\source\repos\swebValidate\SWEBDB_DataAccess\obj\Release\SWEBDB_DataAccess.csproj.CopyComplete
+C:\Users\desar\source\repos\SwebValidate\SWEBDB_DataAccess\obj\Release\SWEBDB_DataAccess.dll
+C:\Users\desar\source\repos\SwebValidate\SWEBDB_DataAccess\obj\Release\SWEBDB_DataAccess.pdb
+C:\Users\desar\source\repos\swebValidate\SWEBDB_DataAccess\obj\Release\SWEBDB_DataAccess.csprojAssemblyReference.cache

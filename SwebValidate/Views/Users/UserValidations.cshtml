@@ -1,0 +1,266 @@
+﻿@model SwebValidate.Models.Users
+
+@{
+	Layout = null;
+
+	IEnumerable<SwebValidate.Models.Users> Users = ViewData["Users"] as IEnumerable<SwebValidate.Models.Users>;
+	IEnumerable<SwebValidate.Models.UserValidations> UserValidations = ViewData["UserValidations"] as IEnumerable<SwebValidate.Models.UserValidations>;
+	IEnumerable<SwebValidate.Models.Validations> Validations = ViewData["Validations"] as IEnumerable<SwebValidate.Models.Validations>;
+	IEnumerable<SwebValidate.Models.UserValidations> UserValidation = ViewData["UserValidations"] as IEnumerable<SwebValidate.Models.UserValidations>;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>UserValidations</title>
+	<script type="text/javascript">
+		jQuery(document).ready(function ($) {
+
+			console.log("userModal: " + @TempData["userModal"].ToString());
+			console.log("UserId: " + @TempData["UserId"].ToString());
+
+			if (@TempData["userModal"].ToString() == false) {
+				console.log("item.id:" + @Model.id);
+				if (@Model.id > 0) {
+					$("#mTitle").text("Editar Usuario");
+					$('.UserModal').attr('action', '/Users/Edit')
+				}
+				else {
+					$("#mTitle").text("Crear Usuario");
+					$('.UserModal').attr('action', '/Users/Create')
+				}
+				$("#mUser").modal('show');
+			}
+
+			$("#btnCreateValidation").on('click', function () {
+				console.log("UserId: " + @TempData["UserId"].ToString());
+				if (@TempData["UserId"] == 0) {
+					alert("Favor seleccionar Usuario");
+				} else {
+					if ($("#Validations").val() > 0) {
+						$.get('@Url.Action("CreateValidation", "Users")', { ValidationId: $("#Validations").val() });
+						window.location.reload();
+					} else {
+						alert("Favor seleccionar Validación");
+					}
+				}
+			});
+
+			if (@TempData["trValidation"].ToString() == false) {
+				$('#trCreateValidation').attr('style', 'visibility:hidden');
+			}
+
+			if (@TempData["validationModal"].ToString() == false) {
+				@*console.log("item.id:" + @Model.id);
+				if (@Model.id > 0) {
+					$('.UserModal').attr('action', '/Users/Edit')
+				}
+				else {
+					
+				}*@
+				$("#mValidation").modal('show');
+			}
+
+		});
+	</script>
+</head>
+<body>
+	@using (Html.BeginForm("Create", "Users", FormMethod.Post, new { @class = "UserModal" }))
+	{
+		@Html.AntiForgeryToken()
+		<div id="mUser" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<h4 id="mTitle" class="modal-title">Crear Usuario</h4>
+					</div>
+					<div class="modal-body">
+						<div class="wrap-editForm100">
+							@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+							<div class="wrap-input100 validate-input" data-validate="Enter username">
+								<span class="form-subtitle p-b-10 p-t-10">
+									Usuario
+								</span>
+								@Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "input100", id = "Usuario", type = "text", placeholder = "Usuario" } })
+								@Html.ValidationMessageFor(model => model.User, "", new { @class = "text-danger" })
+							</div>
+							<div class="wrap-input100 validate-input" data-validate="Enter password">
+								<span class="form-subtitle p-b-10 p-t-10">
+									Contraseña
+								</span>
+								@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "input100", id = "Password", type = "password", placeholder = "Contraseña" } })
+								@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+							</div>
+							<div class="wrap-input100">
+								<span class="form-subtitle p-b-10 p-t-10">
+									Rol
+								</span>
+								@Html.DropDownListFor(model => model.RoleId, new SelectList(Model.Roles, "id", "Role"), new { @class = "DropDownList100" })
+							</div>
+							@Html.HiddenFor(model => model.id)
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button id="btGuardar" type="submit" class="btn btn-warning" title="Guardar cambios.">
+							<i class="glyphicon glyphicon-floppy-disk"></i>
+							Guardar
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+	<br />
+	<table class="table">
+		<tr>
+			<td colspan="5">
+				<button type="button" class="btn btn-warning" onclick="location.href='@Url.Action("Create", "Users")'">
+					<i class="glyphicon glyphicon-user"></i> Crear Usuario
+				</button>
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<th>
+				Usuario
+			</th>
+			@*<th>
+				@Html.DisplayNameFor(model => model.Password)
+			</th>*@
+			<th>
+				Rol
+			</th>
+			<th>
+				Validaciones
+			</th>
+			<th></th>
+		</tr>
+
+		@foreach (var item in Users)
+		{
+			string selectedRow = "";
+			if (item.id == @ViewBag.UserId)
+			{
+				selectedRow = "active";
+			}
+
+			<tr class="@selectedRow">
+				<td>
+					<button class="btn btn-default btn-sm" type="button" data-id="@item.id" onclick="location.href='@Url.Action("Select", "Users", new { id = item.id })'">
+						<span class="glyphicon glyphicon-triangle-right"></span>
+					</button>
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.User)
+				</td>
+				@*<td>
+					@Html.DisplayFor(modelItem => item.Password)
+				</td>*@
+				<td>
+					@foreach (var r in item.Roles)
+					{
+						@Html.DisplayFor(modelItem => r.Role)
+					}
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.AllowedValidations)
+				</td>
+				<td>
+					<button class="btn btn-default btn-sm" type="button" data-id="@item.id" onclick="location.href='@Url.Action("Edit", "Users", new { id = item.id })'">
+						<span class="glyphicon glyphicon-edit"></span>
+					</button>
+				</td>
+			</tr>
+		}
+
+	</table>
+
+	@using (Html.BeginForm("UpdateValidation", "Users", FormMethod.Post, new { @class = "ValidationModal" }))
+	{
+		@Html.AntiForgeryToken()
+		<div id="mValidation" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<h4 class="modal-title">Actualizar Validación</h4>
+					</div>
+					<div class="modal-body">
+						<div class="wrap-editForm100">
+							@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+							<div class="wrap-input100">
+								<span class="form-subtitle p-b-10 p-t-10">
+									Validación
+								</span>
+								@Html.DropDownList("validationId", new SelectList(ViewBag.Validations, "validationId", "validation", @ViewBag.UserValidation.ValidationId), new { @class = "DropDownList100" })
+							</div>
+							<div class="wrap-input100 validate-input" data-validate="Vigente?">
+								<span class="form-subtitle p-b-10 p-t-10">
+									Vigente
+								</span>
+								<div align="center">
+									@Html.CheckBox("IsValid", (bool)@ViewBag.UserValidation.IsValid)
+								</div>
+							</div>
+							@Html.HiddenFor(model => model.id)
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-warning" title="Guardar cambios.">
+							<i class="glyphicon glyphicon-floppy-disk"></i>
+							Guardar
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+	<br />
+	<table class="table">
+		<tr id="trCreateValidation">
+			<td>
+				@Html.DropDownList("Validations", new SelectList(ViewBag.Validations, "ValidationId", "Validation"), new { @class = "DropDownList100" })
+			</td>
+			<td style="padding-top: 10pt">
+				<button id="btnCreateValidation" type="button" class="btn btn-warning">
+					<i class="glyphicon glyphicon-check"></i> Crear Validación
+				</button>
+			</td>
+			<td style="width: 50%;"></td>
+		</tr>
+		<tr>
+			<th>
+				Validación
+			</th>
+			<th>
+				Vigente
+			</th>
+			<th></th>
+		</tr>
+
+		@foreach (var item in UserValidations)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Validation)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsValid)
+					@*@Html.CheckBoxFor(modelItem => item.IsValid, new { @onchange = "location.href='@Url.Action('UpdateValidation', 'Users', new { id = item.id })'" })*@
+				</td>
+				<td>
+					<button class="btn btn-default btn-sm" type="button" data-id="@item.id" onclick="location.href='@Url.Action("UpdateValidation", "Users", new { id = item.id })'">
+						<span class="glyphicon glyphicon-edit"></span>
+					</button>
+				</td>
+			</tr>
+		}
+
+	</table>
+</body>
+</html>

@@ -1,0 +1,101 @@
+﻿@model SwebValidate.Models.login
+
+@{
+//Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	@*<link href="~/Content/login/main.css" rel="stylesheet" />
+	<link href="~/Content/login/util.css" rel="stylesheet" />
+	<link href="~/Content/login/material-design-iconic-font.min.css" rel="stylesheet" />*@
+	<title>Login sweb Validate</title>
+</head>
+<body>
+	@*@Scripts.Render("~/bundles/jquery")
+	@Styles.Render("~/Content/css")
+	@Styles.Render("~/Content/login")*@
+	@*@Scripts.Render("~/bundles/jqueryval")*@
+
+	@using (Html.BeginForm())
+	{
+		@Html.AntiForgeryToken()
+		@Html.Raw(TempData["msg"])
+		@*<div class="form-horizontal">
+				<h4>login</h4>
+				<hr />
+				@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+				<div class="form-group">
+					@Html.LabelFor(model => model.Usuario, htmlAttributes: new { @class = "control-label col-md-2" })
+					<div class="col-md-10">
+						@Html.EditorFor(model => model.Usuario, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.Usuario, "", new { @class = "text-danger" })
+					</div>
+				</div>
+
+				<div class="form-group">
+					@Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+					<div class="col-md-10">
+						@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+						@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-10">
+						<input type="submit" value="Create" class="btn btn-default" />
+					</div>
+				</div>
+			</div>*@
+		<div class="limiter">
+			<div class="container-login100" style="background-image: url('../../Content/Image/Bogota.png');">
+				<div class="wrap-login100">
+					<span class="login100-form-logo">
+						<img src="../../Content/Image/swebValidate.jpg" />
+					</span>
+					<span class="login100-form-title p-b-34 p-t-27">
+						@*sweb <sup>®</sup> Validate*@
+						<sup>®</sup> Validación Web
+					</span>
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+					<div class="wrap-input100 validate-input" data-validate="Enter username">
+						@Html.EditorFor(model => model.User, new { htmlAttributes = new { @class = "input100", id = "Usuario", type = "text", placeholder = "Usuario" } })
+						<span class="focus-input100" data-placeholder=""></span>
+						@*<i class="glyphicon glyphicon-user"></i>*@
+						@Html.ValidationMessageFor(model => model.User, "", new { @class = "text-danger" })
+					</div>
+					<div class="wrap-input100 validate-input" data-validate="Enter password">
+						@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "input100", id = "Password", type = "password", placeholder = "Contraseña" } })
+						<span class="focus-input100" data-placeholder=""></span>
+						@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+					</div>
+					@*<div class="wrap-input100">
+							@Html.Label(Model.Message, htmlAttributes: new { @class = "control-label" })
+						</div>*@
+					<div class="contact100-form-checkbox" style="display: none">
+						<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+						<label class="label-checkbox100" for="ckb1">
+							Remember me
+						</label>
+					</div>
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Ingresar
+						</button>
+					</div>
+					<div class="text-center p-t-90" style="display: none">
+						<a class="txt1" href="#">
+							Forgot Password?
+						</a>
+					</div>
+
+					@*</form>*@
+				</div>
+			</div>
+		</div>
+	}
+</body>
+</html>

@@ -1,0 +1,236 @@
+﻿@model SwebValidate.Models.TicketInfo
+
+@{
+	//Layout = null;
+	ViewBag.Title = "Ticket Validation";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>TicketValidation</title>
+	<script type="text/javascript">
+	jQuery(document).ready(function ($) {
+		nobackbutton();
+
+		function Q(el) {
+			if (typeof el === "string") {
+				var els = document.querySelectorAll(el);
+				return typeof els === "undefined" ? undefined : els.length > 1 ? els : els[0];
+			}
+			return el;
+		}
+		var txt = "innerText" in HTMLElement.prototype ? "innerText" : "textContent";
+		var scannerLaser = Q(".scanner-laser"),
+			imageUrl = new Q("#image-url"),
+			decodeLocal = Q("#decode-img"),
+			scannedImg = Q("#scanned-img"),
+			scannedQR = Q("#scanned-QR");
+		var args = {
+			autoBrightnessValue: 100,
+			resultFunction: function (res) {
+				[].forEach.call(scannerLaser, function (el) {
+					fadeOut(el, 0.5);
+					setTimeout(function () {
+						fadeIn(el, 0.5);
+					}, 300);
+				});
+				//console.log("barcode", res.code);
+				var ticket = res.code;
+				$("#ticketId").val(ticket.substr(ticket.length - 6));
+				scannedImg.src = res.imgData;
+				scannedQR[txt] = res.format + ": " + res.code;
+			},
+			getDevicesError: function (error) {
+				var p, message = "Error detected with the following parameters:\n";
+				for (p in error) {
+					message += p + ": " + error[p] + "\n";
+				}
+				alert(message);
+			},
+			getUserMediaError: function (error) {
+				var p, message = "Error detected with the following parameters:\n";
+				for (p in error) {
+					message += p + ": " + error[p] + "\n";
+				}
+				alert(message);
+			},
+			cameraError: function (error) {
+				var p, message = "Error detected with the following parameters:\n";
+				if (error.name == "NotSupportedError") {
+					var ans = confirm("Your browser does not support getUserMedia via HTTP!\n(see: https:goo.gl/Y0ZkNV).\n You want to see github demo page in a new window?");
+					if (ans) {
+						window.open("https://andrastoth.github.io/webcodecamjs/");
+					}
+				} else {
+					for (p in error) {
+						message += p + ": " + error[p] + "\n";
+					}
+					alert(message);
+				}
+			},
+			cameraSuccess: function () {
+				grabImg.classList.remove("disabled");
+			}
+		};
+
+		var decoder = new WebCodeCamJS("#webcodecam-canvas").buildSelectMenu("#camera-select", "environment|back").init(args); //.init(args);//
+
+		decodeLocal.addEventListener("click", function () {
+			decodeLocalImage();
+		}, false);
+
+		decodeLocalImage = function () {
+			if (decoder.isInitialized()) {
+				decoder.decodeLocalImage(imageUrl.value);
+			}
+			imageUrl.value = null;
+		};
+
+		function fadeOut(el, v) {
+			el.style.opacity = 1;
+			(function fade() {
+				if ((el.style.opacity -= 0.1) < v) {
+					el.style.display = "none";
+					el.classList.add("is-hidden");
+				} else {
+					requestAnimationFrame(fade);
+				}
+			})();
+		}
+
+		function fadeIn(el, v, display) {
+			if (el.classList.contains("is-hidden")) {
+				el.classList.remove("is-hidden");
+			}
+			el.style.opacity = 0;
+			el.style.display = display || "block";
+			(function fade() {
+				var val = parseFloat(el.style.opacity);
+				if (!((val += 0.1) > v)) {
+					el.style.opacity = val;
+					requestAnimationFrame(fade);
+				}
+			})();
+		}
+	});
+	</script>
+</head>
+<body>
+	@using (Html.BeginForm("GetTicketInfo", "TicketValidation", FormMethod.Post))
+	{
+		@Html.AntiForgeryToken()
+		@Html.Raw(TempData["msg"])
+		<div class="limiter">
+			<div class="container-login100" style="background-image: url('../../Content/Image/Bogota.png');">
+				<div class="wrap-login100">
+					<span class="login100-form-logo">
+						<img src="../../Content/Image/ScanBarcode.jpg" />
+					</span>
+					<span class="login100-form-title p-b-34 p-t-27">
+						Validar Tiquete
+					</span>
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+					<div class="wrap-input100">
+						<span class="form-subtitle p-b-20 p-t-15">
+							Cliente / Validación
+						</span>
+						@Html.DropDownListFor(model => model.validationId, new SelectList(Model.Validations, "validationId", "validation"), new { @class = "DropDownList100" })
+					</div>
+					<div class="wrap-input100 validate-input">
+						<span class="form-subtitle p-b-20 p-t-15">
+							Tiquete Parqueadero
+							<button title="Decode Image" class="btn btn-default btn-lg" id="decode-img" type="button" data-toggle="tooltip">
+								<span class="glyphicon glyphicon-barcode "></span>
+							</button>
+						</span>
+						@Html.EditorFor(model => model.TicketId, new { htmlAttributes = new { @class = "input100", id = "ticketId" } })
+						@Html.ValidationMessageFor(model => model.TicketId)
+					</div>
+					<div class="container-login100-form-btn">
+						<button type="submit" class="login100-form-btn">
+							Validar Tiquete
+						</button>
+					</div>
+
+					<div style="display: none">
+						<div>
+							<select class="form-control" id="camera-select"></select>
+							<input id="image-url" type="text" class="form-control" placeholder="Image url">
+							<div class="well" style="position: relative;display: inline-block;">
+								<canvas width="320" height="240" id="webcodecam-canvas"></canvas>
+								<div class="scanner-laser laser-rightBottom" style="opacity: 0.5;"></div>
+								<div class="scanner-laser laser-rightTop" style="opacity: 0.5;"></div>
+								<div class="scanner-laser laser-leftBottom" style="opacity: 0.5;"></div>
+								<div class="scanner-laser laser-leftTop" style="opacity: 0.5;"></div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="well" style="overflow: hidden;">
+								<img width="320" height="240" id="scanned-img" src="">
+							</div>
+							<div class="caption">
+								<h3>Scanned result</h3>
+								<p id="scanned-QR"></p>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								@Html.Label("Validación: " + Model.Message, htmlAttributes: new { @class = "control-label", style = "color: #fff!important; font-family: Verdana" })
+							</div>
+						</div>
+					</div>
+
+					@*<br />
+						@if (ViewBag.Check == null || ViewBag.Check == false)
+						{
+							<div class="row text-center">
+								<div class="col-md-12">
+									<div class="form-group">
+										<input type="submit" value="Validar Tiquete" class="btn btn-default btn-lg" onclick="location.href='@Url.Action("BookValidation", "TicketValidation")'" style="font-family: Verdana" />
+									</div>
+								</div>
+							</div>
+										 onclick="location.href='@Url.Action("BookValidation", "TicketValidation")'"
+						}
+						<br />*@
+				</div>
+			</div>
+		</div>
+		//onclick="location.href='@Url.Action("BookValidation", "TicketValidation")'"
+	}
+	@*<form id="barcode_form" method="post" action="@Url.Action("BarcodeScan", "TicketValidation")" enctype="multipart/form-data">
+		</form>*@
+
+	@*@if (ViewBag.Check == null || ViewBag.Check == false)
+		{
+			<form id="barcode_form" method="post" action="@Url.Action("GetTicketInfo", "TicketValidation")" enctype="multipart/form-data">
+					<input id="ticket" name="file" type="file" size="45" accept="image/*" capture />
+				</form>
+			using (Html.BeginForm("ScanTicket", "TicketValidation", FormMethod.Post))
+				{
+					<div class="container">
+					<div class="row text-center">
+						<div class="col-md-12">
+
+						</div>
+					</div>
+				</div>
+					<br />
+					<div class="row text-center">
+						<div class="col-md-12">
+							<div class="form-group">
+								<input type="submit" value="Validar Tiquete" class="btn btn-default btn-lg" style="font-family: Verdana" />
+							</div>
+						</div>
+					</div>
+				}
+		}
+		else
+		{
+		}*@
+</body>
+</html>
+

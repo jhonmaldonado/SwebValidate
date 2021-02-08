@@ -1,0 +1,29 @@
+﻿@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Validate</title>
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/validation")
+	@Styles.Render("~/Content/css")
+	@Styles.Render("~/Content/login")
+</head>
+<body>
+	<div style="width:auto; text-align: right; background: -webkit-linear-gradient(top,#53535a,#747175);">
+		@if (TempData["SessionId"] != null)
+		{
+			<strong style="color: white">@Html.Encode(TempData["User"])</strong>
+			@Html.ActionLink("| Cerrar Sesión |", "LogOut", "Home", null, new { @style = "color: #dff0d8" })
+		}
+	</div>
+	@RenderBody()
+</body>
+</html>
+<footer style="background: -webkit-linear-gradient(top,#53535a,#747175);">
+	<p style="color: white">&copy; @DateTime.Now.Year - Web Validation by SkiGroup</p>
+</footer>
